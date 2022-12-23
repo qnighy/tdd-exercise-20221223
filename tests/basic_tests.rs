@@ -1,4 +1,4 @@
-use tdd_exercise_20221223::Point;
+use tdd_exercise_20221223::{Point, PointSet};
 
 #[test]
 fn test_create_point() {
@@ -65,4 +65,27 @@ fn test_neighbor_y_plus_1() {
 #[test]
 fn test_not_neighbor_x_y_minus_1() {
     assert!(!Point::new(1, 3).is_neighbor(&Point::new(0, 2)));
+}
+
+#[test]
+fn test_point_set_new() {
+    PointSet::new(&Point::new(1, 3), &Point::new(5, 9));
+}
+
+#[test]
+fn test_point_set_contains_left() {
+    let s = PointSet::new(&Point::new(1, 3), &Point::new(5, 9));
+    assert!(s.contains(&Point::new(1, 3)));
+}
+
+#[test]
+fn test_point_set_contains_right() {
+    let s = PointSet::new(&Point::new(1, 3), &Point::new(5, 9));
+    assert!(s.contains(&Point::new(5, 9)));
+}
+
+#[test]
+fn test_point_set_non_containment() {
+    let s = PointSet::new(&Point::new(1, 3), &Point::new(5, 9));
+    assert!(!s.contains(&Point::new(3, 3)));
 }

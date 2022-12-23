@@ -27,3 +27,23 @@ impl fmt::Display for Point {
         write!(f, "({}, {})", self.x, self.y)
     }
 }
+
+#[derive(Debug, Clone)]
+pub struct PointSet {
+    pt1: Point,
+    pt2: Point,
+}
+
+impl PointSet {
+    pub fn new(pt1: &Point, pt2: &Point) -> Self {
+        assert_ne!(pt1, pt2);
+        Self {
+            pt1: *pt1,
+            pt2: *pt2,
+        }
+    }
+
+    pub fn contains(&self, pt: &Point) -> bool {
+        [self.pt1, self.pt2].contains(pt)
+    }
+}
