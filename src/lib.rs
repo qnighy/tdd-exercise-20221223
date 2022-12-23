@@ -1,4 +1,4 @@
-use std::fmt;
+use std::{collections::HashSet, fmt};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
 pub struct Point {
@@ -30,21 +30,19 @@ impl fmt::Display for Point {
 
 #[derive(Debug, Clone)]
 pub struct PointSet {
-    pts: Vec<Point>,
+    pts: HashSet<Point>,
 }
 
 impl PointSet {
     pub fn new(pt1: &Point, pt2: &Point) -> Self {
-        assert_ne!(pt1, pt2);
         Self {
-            pts: vec![*pt1, *pt2],
+            pts: vec![*pt1, *pt2].into_iter().collect(),
         }
     }
 
     pub fn new3(pt1: &Point, pt2: &Point, pt3: &Point) -> Self {
-        assert_ne!(pt1, pt2);
         Self {
-            pts: vec![*pt1, *pt2, *pt3],
+            pts: vec![*pt1, *pt2, *pt3].into_iter().collect(),
         }
     }
 
@@ -53,6 +51,9 @@ impl PointSet {
     }
 
     pub fn is_connected(&self) -> bool {
-        self.pts[0].is_neighbor(&self.pts[1])
+        let mut pts = self.pts.iter().copied().collect::<Vec<_>>();
+        // For stability
+        pts.sort();
+        pts.len() < 2 || pts[0].is_neighbor(&pts[1])
     }
 }
