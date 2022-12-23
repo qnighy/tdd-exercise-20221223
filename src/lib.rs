@@ -43,6 +43,14 @@ impl PointSet {
         }
     }
 
+    pub fn new3(pt1: &Point, pt2: &Point, pt3: &Point) -> Self {
+        assert_ne!(pt1, pt2);
+        Self {
+            pt1: *pt1,
+            pt2: *pt2,
+        }
+    }
+
     pub fn contains(&self, pt: &Point) -> bool {
         [self.pt1, self.pt2].contains(pt)
     }
