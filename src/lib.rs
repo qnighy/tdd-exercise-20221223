@@ -10,6 +10,16 @@ impl Point {
     pub fn new(x: i32, y: i32) -> Self {
         Point { x, y }
     }
+
+    pub fn is_neighbor(&self, pt: &Point) -> bool {
+        [
+            Point::new(self.x - 1, self.y),
+            Point::new(self.x + 1, self.y),
+            Point::new(self.x, self.y - 1),
+            Point::new(self.x, self.y + 1),
+        ]
+        .contains(pt)
+    }
 }
 
 impl fmt::Display for Point {
