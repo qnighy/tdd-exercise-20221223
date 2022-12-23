@@ -30,32 +30,29 @@ impl fmt::Display for Point {
 
 #[derive(Debug, Clone)]
 pub struct PointSet {
-    pt1: Point,
-    pt2: Point,
+    pts: Vec<Point>,
 }
 
 impl PointSet {
     pub fn new(pt1: &Point, pt2: &Point) -> Self {
         assert_ne!(pt1, pt2);
         Self {
-            pt1: *pt1,
-            pt2: *pt2,
+            pts: vec![*pt1, *pt2],
         }
     }
 
     pub fn new3(pt1: &Point, pt2: &Point, pt3: &Point) -> Self {
         assert_ne!(pt1, pt2);
         Self {
-            pt1: *pt1,
-            pt2: *pt2,
+            pts: vec![*pt1, *pt2, *pt3],
         }
     }
 
     pub fn contains(&self, pt: &Point) -> bool {
-        [self.pt1, self.pt2].contains(pt)
+        self.pts.contains(pt)
     }
 
     pub fn is_connected(&self) -> bool {
-        self.pt1.is_neighbor(&self.pt2)
+        self.pts[0].is_neighbor(&self.pts[1])
     }
 }
