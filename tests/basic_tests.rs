@@ -73,6 +73,12 @@ fn test_point_set_new() {
 }
 
 #[test]
+#[should_panic(expected = "assertion failed: `(left != right)`")]
+fn test_point_set_new_with_same_point() {
+    PointSet::new(&Point::new(1, 3), &Point::new(1, 3));
+}
+
+#[test]
 fn test_point_set_contains_left() {
     let s = PointSet::new(&Point::new(1, 3), &Point::new(5, 9));
     assert!(s.contains(&Point::new(1, 3)));
@@ -88,4 +94,22 @@ fn test_point_set_contains_right() {
 fn test_point_set_non_containment() {
     let s = PointSet::new(&Point::new(1, 3), &Point::new(5, 9));
     assert!(!s.contains(&Point::new(3, 3)));
+}
+
+#[test]
+fn test_point_set_connected_up() {
+    let s = PointSet::new(&Point::new(1, 3), &Point::new(1, 4));
+    assert!(s.is_connected());
+}
+
+#[test]
+fn test_point_set_connected_right() {
+    let s = PointSet::new(&Point::new(1, 3), &Point::new(2, 3));
+    assert!(s.is_connected());
+}
+
+#[test]
+fn test_point_set_not_connected() {
+    let s = PointSet::new(&Point::new(1, 3), &Point::new(2, 4));
+    assert!(!s.is_connected());
 }

@@ -46,4 +46,8 @@ impl PointSet {
     pub fn contains(&self, pt: &Point) -> bool {
         [self.pt1, self.pt2].contains(pt)
     }
+
+    pub fn is_connected(&self) -> bool {
+        self.pt1.is_neighbor(&self.pt2)
+    }
 }
