@@ -54,6 +54,16 @@ impl PointSet {
         let mut pts = self.pts.iter().copied().collect::<Vec<_>>();
         // For stability
         pts.sort();
-        pts.len() < 2 || pts[0].is_neighbor(&pts[1])
+        if pts.len() <= 1 {
+            true
+        } else if pts.len() == 2 {
+            pts[0].is_neighbor(&pts[1])
+        } else if pts.len() == 3 {
+            pts[0].is_neighbor(&pts[1]) && pts[1].is_neighbor(&pts[2])
+                || pts[0].is_neighbor(&pts[1]) && pts[0].is_neighbor(&pts[2])
+                || pts[0].is_neighbor(&pts[2]) && pts[1].is_neighbor(&pts[2])
+        } else {
+            todo!("more than 3 points")
+        }
     }
 }

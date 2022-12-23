@@ -133,3 +133,27 @@ fn test_point_set_not_connected() {
     let s = PointSet::new(&Point::new(1, 3), &Point::new(2, 4));
     assert!(!s.is_connected());
 }
+
+#[test]
+fn test_point_set_3_connected_straight() {
+    let s = PointSet::new3(&Point::new(1, 3), &Point::new(2, 3), &Point::new(3, 3));
+    assert!(s.is_connected());
+}
+
+#[test]
+fn test_point_set_3_connected_v() {
+    let s = PointSet::new3(&Point::new(1, 3), &Point::new(2, 3), &Point::new(2, 4));
+    assert!(s.is_connected());
+}
+
+#[test]
+fn test_point_set_3_connected_reverse_straight() {
+    let s = PointSet::new3(&Point::new(1, 3), &Point::new(2, 3), &Point::new(0, 3));
+    assert!(s.is_connected());
+}
+
+#[test]
+fn test_point_set_3_not_connected() {
+    let s = PointSet::new3(&Point::new(1, 3), &Point::new(2, 3), &Point::new(4, 3));
+    assert!(!s.is_connected());
+}
