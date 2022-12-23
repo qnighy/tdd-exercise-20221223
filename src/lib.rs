@@ -1,4 +1,4 @@
-use std::{collections::HashSet, fmt};
+use std::{collections::HashSet, fmt, hash::Hash};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Default)]
 pub struct Point {
@@ -28,30 +28,47 @@ impl fmt::Display for Point {
     }
 }
 
-#[derive(Debug, Clone)]
-pub struct PointSet {
-    pts: HashSet<Point>,
+pub trait IsNeighbor {
+    fn is_neighbor(&self, pt: &Self) -> bool;
+}
+impl IsNeighbor for Point {
+    fn is_neighbor(&self, pt: &Self) -> bool {
+        Point::is_neighbor(self, pt)
+    }
 }
 
-impl PointSet {
-    pub fn new(pt1: &Point, pt2: &Point) -> Self {
+pub type PointSet = NeighborSet<Point>;
+
+#[derive(Debug, Clone)]
+pub struct NeighborSet<T>
+where
+    T: Hash + Eq,
+{
+    pts: HashSet<T>,
+}
+
+impl<T> NeighborSet<T>
+where
+    T: Clone + Hash + Eq + Ord + IsNeighbor,
+{
+    pub fn new(pt1: &T, pt2: &T) -> Self {
         Self {
-            pts: vec![*pt1, *pt2].into_iter().collect(),
+            pts: [pt1, pt2].iter().copied().cloned().collect(),
         }
     }
 
-    pub fn new3(pt1: &Point, pt2: &Point, pt3: &Point) -> Self {
+    pub fn new3(pt1: &T, pt2: &T, pt3: &T) -> Self {
         Self {
-            pts: vec![*pt1, *pt2, *pt3].into_iter().collect(),
+            pts: [pt1, pt2, pt3].iter().copied().cloned().collect(),
         }
     }
 
-    pub fn contains(&self, pt: &Point) -> bool {
+    pub fn contains(&self, pt: &T) -> bool {
         self.pts.contains(pt)
     }
 
     pub fn is_connected(&self) -> bool {
-        let mut pts = self.pts.iter().copied().collect::<Vec<_>>();
+        let mut pts = self.pts.iter().cloned().collect::<Vec<_>>();
         // For stability
         pts.sort();
         if pts.len() <= 1 {
